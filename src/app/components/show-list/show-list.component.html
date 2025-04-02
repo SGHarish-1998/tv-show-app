@@ -1,0 +1,47 @@
+<div class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-5">
+    <div class="d-flex align-items-center gap-3">
+      <img src="assets/images/tv-show.avif"
+           width="60"
+           height="60"
+           alt="TV Logo"
+           class="logo-img" />
+      <h2 class="section-title m-0">Popular TV Shows</h2>
+    </div>
+
+    <!-- Search Input with Icon -->
+    <div class="input-group w-50">
+      <span class="input-group-text bg-white border-end-0">
+        🔍
+      </span>
+      <input
+        type="text"
+        class="form-control border-start-0"
+        placeholder="Search for a TV show..."
+        [(ngModel)]="searchQuery"
+        (input)="onSearch()"
+      />
+    </div>
+  </div>
+</div>
+
+  <div class="container py-4">
+    <div class="row g-4">
+      <div class="col-12 col-sm-6 col-md-4 col-lg-3" *ngFor="let show of visibleShows">
+        <div class="card show-card h-100" (click)="goToDetails(show.id)">
+          <img [src]="show.image?.medium || 'https://via.placeholder.com/210x295'"
+               class="card-img-top show-poster"
+               alt="{{ show.name }}">
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title">{{ show.name }}</h5>
+            <p class="text-muted mb-2">⭐ {{ show.rating?.average || 'N/A' }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="text-center mt-4" *ngIf="itemsToShow < shows.length">
+    <button class="btn btn-secondary" (click)="loadMore()">See More</button>
+  </div>
+  
