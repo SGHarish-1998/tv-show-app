@@ -41,7 +41,7 @@
     </div>
   </div>
   
-  <div class="text-center mt-4" *ngIf="itemsToShow < shows.length">
+  <div class="text-center mt-4" *ngIf="!isSearching && itemsToShow < shows.length">
     <button class="btn btn-secondary" (click)="loadMore()">See More</button>
   </div>
   
