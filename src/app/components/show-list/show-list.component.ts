@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TvmazeService } from 'src/app/services/tvmaze.service';
 import { ShowStateService } from './show-state.service';
 import { Router } from '@angular/router';
+import { FavouriteService } from 'src/app/services/favourite.service';
 
 @Component({
   selector: 'app-show-list',
@@ -16,7 +17,7 @@ export class ShowListComponent implements OnInit {
   searchQuery: string = '';
   isSearching: boolean = false;
  
-  constructor(private tvmazeService: TvmazeService,private showState: ShowStateService, private router: Router) {}
+  constructor(private tvmazeService: TvmazeService,private favouriteService: FavouriteService,private showState: ShowStateService, private router: Router) {}
   
   ngOnInit(): void {
     this.itemsToShow = this.showState.itemsToShow || 10;
@@ -65,5 +66,9 @@ export class ShowListComponent implements OnInit {
     this.showState.scrollPosition = window.scrollY;
     this.showState.itemsToShow = this.itemsToShow;
     this.router.navigate(['/show', id]);
+  }
+
+  isFavourite(id: number): boolean {
+    return this.favouriteService.isFavourite(id);
   }
 }

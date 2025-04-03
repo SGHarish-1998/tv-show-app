@@ -11,7 +11,15 @@
         <p><strong>Premiered:</strong> {{ show.premiered }}</p>
         <div><strong>Summary:</strong></div>
         <div [innerHTML]="show.summary" class="mt-2"></div>
-        <button class="btn btn-secondary mt-4" (click)="goBack()">← Back</button>
+        <div class="d-flex align-items-center gap-3 mt-4">
+          <button class="btn btn-secondary" (click)="goBack()">← Back</button>
+        
+          <button class="btn btn-warning" (click)="toggleFavourite()">
+            {{ isFav ? '★ Remove from Favourites' : '☆ Add to Favourites' }}
+          </button>
+        </div>
       </div>
     </div>
   </div>
+
+
