@@ -32,10 +32,10 @@ export class ShowDetailComponent implements OnInit {
 
   toggleFavourite(): void {
     if (this.isFav) {
-      this.favouriteService.removeFavourite(this.show.id);
+      this.favouriteService.removeFavourite(this.show.id); //remove the show from the favourites
       alert('Removed from favourites!');
     } else {
-      this.favouriteService.addFavourite(this.show);
+      this.favouriteService.addFavourite(this.show); //add the show to the favourites.
       alert('Added to favourites!');
     }
     this.isFav = !this.isFav;
