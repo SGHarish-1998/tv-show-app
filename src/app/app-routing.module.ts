@@ -10,8 +10,8 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(routes, {
-    scrollPositionRestoration: 'disabled',  // ✅ prevent auto-scroll to top
-    anchorScrolling: 'disabled'             // ✅ (extra safety)
+    scrollPositionRestoration: 'disabled',  
+    anchorScrolling: 'disabled'             
   })],
   exports: [RouterModule]
 })
