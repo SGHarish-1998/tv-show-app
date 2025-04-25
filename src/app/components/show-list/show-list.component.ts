@@ -10,18 +10,26 @@ import { FavouriteService } from 'src/app/services/favourite.service';
   styleUrls: ['./show-list.component.scss']
 })
 export class ShowListComponent implements OnInit {
-  shows: any[] = [];
-  visibleShows: any[] = [];
+  shows: any[] = [];  //total shows getting varaible
+  visibleShows: any[] = [];  //filter what need to shown to the user
   itemsToShow!: number;
 
   searchQuery: string = '';
   isSearching: boolean = false;
+  showOnlyFavourites: boolean = false;
  
   constructor(private tvmazeService: TvmazeService,private favouriteService: FavouriteService,private showState: ShowStateService, private router: Router) {}
   
   ngOnInit(): void {
-    this.itemsToShow = this.showState.itemsToShow || 10;
-    this.fetchShows();
+    this.searchQuery = this.showState.searchQuery;
+    this.isSearching = this.showState.isSearching;
+  
+    if (this.isSearching && this.showState.searchResults.length > 0) {
+      this.visibleShows = this.showState.searchResults;
+    } else {
+      this.itemsToShow = this.showState.itemsToShow || 10;
+      this.fetchShows();
+    }
   }
 
   //implement the method for searching
@@ -31,15 +39,45 @@ export class ShowListComponent implements OnInit {
     //empty check
     if (query.length === 0) {
       this.isSearching = false;
-      this.updateVisibleShows(); // restore default list
+      this.searchQuery = '';
+
+      this.itemsToShow = this.showState.itemsToShow = 10;
+
+      this.showState.isSearching = false;
+      this.showState.searchQuery = '';
+      this.showState.searchResults = [];
+      if (this.shows.length === 0) {
+        this.fetchShows(); // refills this.shows
+      } else {
+        this.visibleShows = this.shows.slice(0, this.itemsToShow || 10);
+      }
       return;
     }
 
     this.isSearching = true;
+    this.showState.searchQuery = this.searchQuery;
+    this.showState.isSearching = true;
 
     this.tvmazeService.getSearchResults(query).subscribe((results) => {
       this.visibleShows = results.map((res: any) => res.show);
+      this.showState.searchResults = this.visibleShows; 
     });
+    console.log('Search results:', this.visibleShows.length);
+  }
+
+  toggleFavourites(): void {
+    this.showOnlyFavourites = !this.showOnlyFavourites;
+  
+    if (this.showOnlyFavourites) {
+      const favs = this.favouriteService.getFavourites();
+      this.visibleShows = favs;
+    } else {
+      if (this.isSearching && this.showState.searchResults.length > 0) {
+        this.visibleShows = this.showState.searchResults;
+      } else {
+        this.visibleShows = this.shows.slice(0, this.itemsToShow || 10);
+      }
+    }
   }
 
   fetchShows(): void {
