@@ -9,4 +9,7 @@ export class ShowStateService {
   lastClickedId: number | null = null; 
   hasVisitedOnce = false;
   cachedShows: any[] = []; // ✅ cache the show list
+  searchQuery: string = '';
+  searchResults: any[] = [];
+  isSearching: boolean = false;
 }
